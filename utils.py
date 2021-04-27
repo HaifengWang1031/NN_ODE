@@ -4,7 +4,7 @@ import torch
 from torch.utils.data import Dataset,DataLoader,TensorDataset
 import math
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 def linear_1(t,x):
     x1,x2 = x[0],x[1]
@@ -12,9 +12,11 @@ def linear_1(t,x):
 
 def linear_2(t,x):
     x1,x2 = x[0],x[1]
+
+
     return [x1-4*x2,4*x1-7*x2]
 
-def damped_pendulum(t,x,alpha = 8.91,beta = 0.2):
+def damped_pendulum(t,x,alpha =0.2 ,beta = 9.81):
     x1,x2 = x[0],x[1]
     return [x2,-alpha*x2-beta*np.sin(x1)]
 
@@ -40,7 +42,6 @@ class Data_Generater:
 
     def compute_trajectory(self,t_span,init_y,delta_t,method="RK45"):
         t_eval = np.arange(t_span[0],t_span[1]+delta_t,delta_t)
-        print(t_eval)
         result =integrate.solve_ivp(self.govern_funcs,t_span,init_y,method,t_eval)
         return result
 
@@ -66,7 +67,7 @@ class Data_Generater:
 
 if __name__ == "__main__":
     dg = Data_Generater("damped_pendulum")
-    result = dg.compute_trajectory([0,20],[-1.193,-3.876],0.02,"RK45")
+    result = dg.compute_trajectory([0,20],[-1.193,-3.876],0.1,"RK45")
     import matplotlib.pyplot as plt
 
     t = result.t
@@ -75,4 +76,7 @@ if __name__ == "__main__":
     x2 = y[1]
     plt.plot(t,x1,"r")
     plt.plot(t,x2,"b")
+    
+    plt.show()
+    plt.plot(x1,x2)
     plt.show()

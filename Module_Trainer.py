@@ -5,7 +5,7 @@ from Module import *
 from utils import Data_Generater
 import matplotlib.pyplot as plt
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 class Trainer:
     def __init__(self,module_name,func_str,t_span,delta_t,comput_domain,epoch,lr,batch_size):
@@ -19,7 +19,7 @@ class Trainer:
         self.epoch = epoch
         
     def train(self):
-        Train_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=100)
+        Train_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=500)
         Test_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=20)
         
         for i in range(self.epoch):
