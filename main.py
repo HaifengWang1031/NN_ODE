@@ -9,16 +9,16 @@ import math
 # args = parse.parse_args()
 
 config = {
-   "module_name":"RT_ResNet", #select from "ResNet" "RT_ResNet" "RS_ResNet"
-   "func_str":"damped_pendulum", #select from "linear_1" "linear_2" "damped_pendulum" "genetic_toggle_switch"
+   "module_name":"RK_ResNet", #select from "ResNet" "RT_ResNet" "RS_ResNet"
+   "func_str":"genetic_toggle_switch", #select from "linear_1" "linear_2" "damped_pendulum" "genetic_toggle_switch"
    "t_span":[0.,20.],
    "delta_t":0.1,
-   "comput_domain":[[-np.pi,np.pi],[-2*np.pi,2*np.pi]],
+   "comput_domain":[[15,20],[15,20]],
    "epoch" : 300,
    "lr": 0.001, 
    "batch_size" : 128
 }
-init_y = [-1.193,-3.876]
+init_y = [17,19]
 
 
 trainer = Module_Trainer.Trainer(**config)

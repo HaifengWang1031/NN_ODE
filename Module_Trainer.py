@@ -19,8 +19,8 @@ class Trainer:
         self.epoch = epoch
         
     def train(self):
-        Train_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=500)
-        Test_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=20)
+        Train_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=100)
+        Test_Dataset = self.dg.data_collector(self.t_span,self.delta_t,self.comput_domain,num_trajectory=10)
         
         for i in range(self.epoch):
             self.module.train()
@@ -61,7 +61,7 @@ class Trainer:
         ax2.scatter(t,predict_trajectory[:,1])
 
         ax3.plot(trajectory[:,0],trajectory[:,1])
-        ax3.plot(predict_trajectory[:,0],predict_trajectory[:,1])
+        ax3.scatter(predict_trajectory[:,0],predict_trajectory[:,1])
         plt.show()
 
     def save(self,):

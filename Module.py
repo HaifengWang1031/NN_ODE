@@ -62,10 +62,33 @@ class RS_ResNet(nn.Module):
             self.reset_ptr()
         return y
 
+
+class RK_ResNet(nn.Module):
+    def __init__(self,sol_dim,hidden_units=30,M=3):
+        super().__init__()
+        self.res_block_1 = ResNet(sol_dim)
+        self.res_block_2 = ResNet(sol_dim)
+        self.res_block_3 = ResNet(sol_dim)
+        self.sum_weight = nn.parameter.Parameter(torch.rand(3))
+
+    def forward(self,x):
+        weight = F.softmax(self.sum_weight,dim=0)
+        result = x
+        y1 = self.res_block_1(x)
+        y2 = self.res_block_2(y1)
+        y3 = self.res_block_3(y2)
+
+        result = weight[0]*y1 + weight[1]*y2 + weight[2]*y3
+
+
+        return result
+    
+
 module_dict = {
     "ResNet":ResNet,
     "RT_ResNet":RT_ResNet,
-    "RS_ResNet":RS_ResNet
+    "RS_ResNet":RS_ResNet,
+    "RK_ResNet":RK_ResNet
 }    
 
 def choose_module(name):
@@ -78,3 +101,8 @@ def choose_module(name):
         for index,mn in enumerate(module_dict.keys()):
             print(index,": ",mn)
         raise RuntimeError
+
+
+if __name__ == "__main__":
+    rk_res = RK_ResNet(2)
+    print(list(rk_res.parameters()))
