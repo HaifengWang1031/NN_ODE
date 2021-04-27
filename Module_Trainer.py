@@ -9,7 +9,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class Trainer:
     def __init__(self,module_name,func_str,t_span,delta_t,comput_domain,epoch,lr,batch_size):
-        self.module = choose_module(module_name)(2).to(device)
+        self.module = choose_module(module_name)(2,40).to(device)
         self.module_optim = torch.optim.Adam(self.module.parameters(),lr) 
 
         self.dg = Data_Generater(func_str,batch_size)
